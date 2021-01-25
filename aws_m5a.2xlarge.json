@@ -29,8 +29,7 @@
       "ssh_username": "{{user `username`}}",
       "tags": {
         "build_timestamp": "{{isotime `20060102T150405`}}"
-      },
-      "skip_create_image": true
+      }
     },
     {
       "type": "docker",
