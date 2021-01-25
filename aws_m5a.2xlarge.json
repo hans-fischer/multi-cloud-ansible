@@ -1,0 +1,60 @@
+{
+  "_author": "Hans Fischer <kontakt@hans-fischer.com>",
+  "_copyright": "2021, Hans Fischer",
+  "variables": {
+    "username": "ubuntu",
+    "aws_access_key": "{{env `aws_access_key`}}",
+    "aws_secret_key": "{{env `aws_secret_key`}}",
+    "aws_region": "{{env `aws_region`}}",
+    "system_locale": "de_DE"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "source_ami": "ami-0502e817a62226e03",
+      "region": "eu-central-1",
+      "instance_type": "t2.micro",
+      "associate_public_ip_address": true,
+      "security_group_id": "sg-0226da8568c43652b",
+      "launch_block_device_mappings": [
+        {
+          "delete_on_termination": true,
+          "device_name": "xvda",
+          "volume_type": "gp2",
+          "volume_size": 10
+        }
+      ],
+      "ami_name": "Spark {{user `spark_version`}} Cluster - Build {{isotime `20060102T150405`}}",
+      "communicator": "ssh",
+      "ssh_username": "{{user `username`}}",
+      "tags": {
+        "build_timestamp": "{{isotime `20060102T150405`}}"
+      },
+      "skip_create_image": true
+    },
+    {
+      "type": "docker",
+      "image": "ubuntu:20.04",
+      "commit": true
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sleep 1",
+        "uname -a",
+        "sudo apt-get install -y python3"
+      ]
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "provisioners/ansible/benchmark_recipe.yml",
+      "ansible_env_vars": ["ANSIBLE_CONFIG=provisioners/ansible/ansible.cfg"],
+      "user": "{{user `username`}}",
+      "extra_arguments": ["-v",
+        "--extra-vars", "PROVISION_TYPE={{ packer_builder_type }}"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+---
+- name: Install PHP, FPM, Nginx and modules
+  hosts: all
+  become: true
+  become_method: sudo
+  roles:
+    - sysbench
