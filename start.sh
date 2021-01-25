@@ -5,7 +5,6 @@ docker run -it \
     -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
     -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
     -e AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION \
+    -e GOOGLE_APPLICATION_CREDENTIALS="/root/packer/local_google_compute_service_account.json" \
     provision_worker \
     bash
-
-# packer build -only=amazon-ebs aws_m5a.2xlarge.json

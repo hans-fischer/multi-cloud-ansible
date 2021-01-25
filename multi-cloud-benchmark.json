@@ -3,6 +3,7 @@
   "_copyright": "2021, Hans Fischer",
   "variables": {
     "username": "ubuntu",
+    "threads": "1",
     "aws_access_key": "{{env `aws_access_key`}}",
     "aws_secret_key": "{{env `aws_secret_key`}}",
     "aws_region": "{{env `aws_region`}}",
@@ -30,6 +31,18 @@
       "tags": {
         "build_timestamp": "{{isotime `20060102T150405`}}"
       }
+    },{
+      "type": "googlecompute",
+      "project_id": "benchmark-302813",
+      "machine_type": "e2-standard-2",
+      "source_image_family": "ubuntu-2004-lts",
+      "region": "europe-west3",
+      "zone": "europe-west3-a",
+      "image_description": "Benchmark Ubuntu Machine Image",
+      "image_name": "myu18benchmark",
+      "disk_size": 10,
+      "disk_type": "pd-ssd",
+      "ssh_username": "ubuntu"
     },
     {
       "type": "docker",
@@ -52,7 +65,7 @@
       "ansible_env_vars": ["ANSIBLE_CONFIG=provisioners/ansible/ansible.cfg"],
       "user": "{{user `username`}}",
       "extra_arguments": ["-v",
-        "--extra-vars", "PROVISION_TYPE={{ packer_builder_type }}"
+        "--extra-vars", "threads={{ user `threads` }}"
       ]
     }
   ]
