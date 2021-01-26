@@ -18,7 +18,7 @@
       "type": "amazon-ebs",
       "source_ami": "ami-0502e817a62226e03",
       "region": "eu-central-1",
-      "instance_type": "t2.micro",
+      "instance_type": "m5a.2xlarge",
       "associate_public_ip_address": true,
       "security_group_id": "sg-0226da8568c43652b",
       "launch_block_device_mappings": [
@@ -29,7 +29,7 @@
           "volume_size": 10
         }
       ],
-      "ami_name": "Spark {{user `spark_version`}} Cluster - Build {{isotime `20060102T150405`}}",
+      "ami_name": "sysbench-{{isotime `20060102-150405`}}",
       "communicator": "ssh",
       "ssh_username": "{{user `username`}}",
       "tags": {
@@ -38,12 +38,12 @@
     },{
       "type": "googlecompute",
       "project_id": "benchmark-302813",
-      "machine_type": "e2-standard-2",
+      "machine_type": "e2-standard-8",
       "source_image_family": "ubuntu-2004-lts",
       "region": "europe-west3",
       "zone": "europe-west3-a",
       "image_description": "Benchmark Ubuntu Machine Image",
-      "image_name": "myu18benchmark",
+      "image_name": "sysbench-{{isotime `20060102-150405`}}",
       "disk_size": 10,
       "disk_type": "pd-ssd",
       "ssh_username": "ubuntu"
@@ -56,7 +56,7 @@
       "subscription_id": "{{user `AZURE_SUBSCRIPTION_ID`}}",
   
       "managed_image_resource_group_name": "packerRG",
-      "managed_image_name": "BenchmarkPackerImage",
+      "managed_image_name": "sysbench-{{isotime `20060102-150405`}}",
   
       "os_type": "Linux",
       "image_publisher": "Canonical",
@@ -69,7 +69,7 @@
       },
   
       "build_resource_group_name": "packerRG",
-      "vm_size": "Standard_DS2_v2",
+      "vm_size": "Standard_D8s_v3",
       "managed_image_storage_account_type": "Premium_LRS"
     },
     {

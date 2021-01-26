@@ -10,7 +10,7 @@
 
 
 - name: Execute CPU test
-  shell: "sysbench --test=cpu --num-threads={{ threads }} --cpu-max-prime=1000 --time=0 --events=1000 run > /home/ubuntu/result/sysbench-cpu-test"
+  shell: "sysbench --test=cpu --num-threads={{ threads }} --cpu-max-prime=120000 --time=0 --events=15000 run > /home/ubuntu/result/sysbench-cpu-test"
 
 - name: Fetch cpu test data
   ansible.builtin.fetch:
@@ -20,7 +20,7 @@
 
 
 - name: Execute RAM test
-  shell: "sysbench --num-threads={{ threads }} --test=memory --time=0 --memory-block-size=1M --memory-total-size=100G run > /home/ubuntu/result/sysbench-ram-test"
+  shell: "sysbench --num-threads={{ threads }} --test=memory --time=0 --memory-block-size=1M --memory-total-size=1000G run > /home/ubuntu/result/sysbench-ram-test"
 
 - name: Fetch ram test data
   ansible.builtin.fetch:
@@ -38,12 +38,12 @@
     dest: ../../../results/test-result-{{ packer_builder_type }}/
     flat: yes
 
-- name: Delete Seq-IO-testfiles
+- name: Delete SEQ-IO-testfiles
   shell: /bin/rm -rf /home/ubuntu/test_file.*
 
 
 - name: Prepair ASEQ-IO test
-  shell: "sysbench --test=fileio --file-total-size=4096000K --file-block-size=4096K --file-num=1000 --num-threads={{ threads }} --max-requests=0 --max-time=0 --file-extra-flags=direct --file-test-mode=rndrd prepare"
+  shell: "sysbench --test=fileio --file-total-size=4096000K --file-block-size=4096K --file-num=1000 --num-threads={{ threads }} --max-requests=0 --max-time=0 --file-extra-flags=direct --file-test-mode=rndrd prepare > /dev/null"
 
 - name: Execute ASEQ-IO test
   shell: "sysbench --test=fileio --file-total-size=4096000K --file-block-size=4096K --file-num=1000 --num-threads={{ threads }} --max-requests=0 --max-time=120 --file-extra-flags=direct --file-test-mode=rndrd run > /home/ubuntu/result/sysbench-aseq-io-test"
@@ -53,3 +53,6 @@
     src: /home/ubuntu/result/sysbench-aseq-io-test
     dest: ../../../results/test-result-{{ packer_builder_type }}/
     flat: yes
+
+- name: Delete ASEQ-IO-testfiles
+  shell: /bin/rm -rf /home/ubuntu/test_file.*
