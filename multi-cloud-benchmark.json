@@ -4,10 +4,14 @@
   "variables": {
     "username": "ubuntu",
     "threads": "1",
+    "system_locale": "de_DE",
     "aws_access_key": "{{env `aws_access_key`}}",
     "aws_secret_key": "{{env `aws_secret_key`}}",
     "aws_region": "{{env `aws_region`}}",
-    "system_locale": "de_DE"
+    "AZURE_CLIENT_ID": "{{env `AZURE_CLIENT_ID`}}",
+    "AZURE_CLIENT_SECRET": "{{env `AZURE_CLIENT_SECRET`}}",
+    "AZURE_TENANT_ID": "{{env `AZURE_TENANT_ID`}}",
+    "AZURE_SUBSCRIPTION_ID": "{{env `AZURE_SUBSCRIPTION_ID`}}"
   },
   "builders": [
     {
@@ -43,6 +47,30 @@
       "disk_size": 10,
       "disk_type": "pd-ssd",
       "ssh_username": "ubuntu"
+    },{
+      "type": "azure-arm",
+  
+      "client_id": "{{user `AZURE_CLIENT_ID`}}",
+      "client_secret": "{{user `AZURE_CLIENT_SECRET`}}",
+      "tenant_id": "{{user `AZURE_TENANT_ID`}}",
+      "subscription_id": "{{user `AZURE_SUBSCRIPTION_ID`}}",
+  
+      "managed_image_resource_group_name": "packerRG",
+      "managed_image_name": "BenchmarkPackerImage",
+  
+      "os_type": "Linux",
+      "image_publisher": "Canonical",
+      "image_offer": "0001-com-ubuntu-server-focal",
+      "image_sku": "20_04-lts-gen2",
+      "plan_info": null,
+  
+      "azure_tags": {
+          "role": "packer-benchmark-delete-me"
+      },
+  
+      "build_resource_group_name": "packerRG",
+      "vm_size": "Standard_DS2_v2",
+      "managed_image_storage_account_type": "Premium_LRS"
     },
     {
       "type": "docker",
